@@ -17,6 +17,35 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: "1.25.1"
+      
+      - name: Install gosec
+        run: go install github.com/securego/gosec/v2/cmd/gosec@latest
+      
+      - name: Run gosec
+        run: gosec ./...
 
-      - name: Show Go Version
-        run: go test ./... -cover 
+      - name: Run tests
+        run: go test ./... -cover
+
+  style:
+    name: Style
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.25.1"
+      
+      - name: Install staticcheck
+        run: go install honnef.co/go/tools/cmd/staticcheck@latest
+
+      - name: Style check
+        run: |
+          test -z "$(go fmt ./...)" || (echo "Go code is not formatted" && exit 1)
+
+      - name: Run staticcheck
+        run: test -z "$(staticcheck ./...)" || (echo "Staticcheck found issues" && exit 1)
