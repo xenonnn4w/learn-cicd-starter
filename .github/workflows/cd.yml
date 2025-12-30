@@ -19,4 +19,29 @@ jobs:
           go-version: "1.25.1"
 
       - name: Run script
+<<<<<<< HEAD
         run: scripts/buildprod.sh
+=======
+        run: scripts/buildprod.sh
+
+      - name: Auth to gc
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Setup gc
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: notely-482715
+      
+       # Allow Docker to push to Artifact Registry
+      - name: Configure Docker for Artifact Registry
+        run: |
+          gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
+
+      # Build and push Docker image
+      - name: Build and push Docker image
+        run: |
+          gcloud builds submit \
+            --tag us-central1-docker.pkg.dev/notely-482715/notely-ar-repo/learn-cicd:v1 .
+>>>>>>> 45108ce (Adding cd)
