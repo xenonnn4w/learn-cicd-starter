@@ -33,5 +33,5 @@ jobs:
         run: gcloud info
 
       - name: Build and push Docker image
-        run: gcloud builds submit \
-            --tag us-central1-docker.pkg.dev/notely-482715/notely-ar-repo/learn-cicd:v1 .
+        run: gcloud builds submit --tag us-central1-docker.pkg.dev/notely-482715/notely-ar-repo/learn-cicd:v1 .
+
